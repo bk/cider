@@ -1,0 +1,15 @@
+{% from "_macros.html" import render_header with context %}
+{% extends "base.html" %}
+
+{% block title %}{{ page.title }} | {{ super() }}{% endblock %}
+
+{% block header %}
+<header class="box-shadow">
+    {{ render_header() }}
+</header>
+{% endblock %}
+
+{% block content %}
+<div class="heading-text">{{ page.description | default('', true) }}</div>
+{{ CONTENT | safe }}
+{% endblock %}

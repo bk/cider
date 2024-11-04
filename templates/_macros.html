@@ -1,0 +1,20 @@
+{% macro render_header() %}
+<a href="/">
+    <div class="logo">
+        <img src="{{ site.extra.cider.logo_path | default('/logo.png', true) }}" alt="logo">
+        {{ site.extra.cider.logo_name | default('Cider', true) }}
+    </div>
+</a>
+<nav>
+  {% for pg in MDCONTENT.sorted_by('weight') %}
+    {% if not pg['data']['page'].exclude_from_nav %}
+      <a class="nav-item subtitle-text" href="{{ pg['url'] | safe }}">{{ pg['data']['page'].title }}</a>
+    {% endif %}
+  {% endfor %}
+  {% if site.extra.cider.extra_menu %}
+    {% for menu in site.extra.cider.extra_menu %}
+      <a class="nav-item subtitle-text" href="{{ menu.link | safe }}">{{ menu.title }}</a>
+    {% endfor %}
+  {% endif %}
+</nav>
+{% endmacro %}

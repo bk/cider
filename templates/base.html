@@ -1,0 +1,112 @@
+{% from "_macros.html" import render_header with context -%}
+<!DOCTYPE html>
+<html lang="{{ site.lang | default('en') }}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{{ site.title }}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% block favicon %}
+    <link rel="icon" type="image/png" href="/favicon.ico">
+    {% endblock %}
+    {% include "_variables.html" %}
+    {% block fonts %}
+    {% include "_fonts.html" %}
+    {% endblock %}
+    <link rel="stylesheet" href="{{ 'css/cider.css' | url | fingerprint | safe }}">
+    {% block head %}
+    {% endblock %}
+</head>
+
+<body>
+    {% block header %}
+
+    <header class="pos-absolute" style="background-color: transparent">
+        {{ render_header() }}
+    </header>
+
+    <div class="hero">
+        {% block hero %}
+          {% set hero_comp = page.hero_component | default('_hero.html', true) %}
+          {% include hero_comp %}
+        {% endblock %}
+    </div>
+
+    {% endblock %}
+
+    <main>
+        {% block toc %}
+        {% if TOC %}
+        <div class="toc">
+            <div class="toc-sticky">
+              {% for h in TOC %}
+                <div class="toc-item">
+                    <a class="subtext" href="{{h.url | safe}}">{{ h.title }}</a>
+                </div>
+                {% if h.children %}
+                  {% for h2 in h.children %}
+                  <div class="toc-item-child">
+                    <a class="subtext" href="{{h2.url | safe}}"><small>- {{ h2.title }}</small></a>
+                  </div>
+                  {% endfor %}
+                {% endif %}
+              {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        {% endblock %}
+
+        <div class="content text">
+            {% block content %}
+            <div id="features" class="heading-text">Overview</div>
+            {% if CONTENT %}{{ CONTENT | safe }}{% endif %}
+            {% endblock %}
+        </div>
+
+        {% block sidebar %}
+          {% if not page.no_sidebar %}
+            {% set sidebar_comp = page.sidebar_component or '_sidebar.html' %}
+            {% include sidebar_comp %}
+          {% endif %}
+        {% endblock %}
+    </main>
+
+    {% block footer %}
+    <footer class="text-center">
+        <small class="subtext">
+          {%- if site.extra.cider.footer_text %}
+            {{ site.extra.cider.footer_text | safe }}
+          {%- else %}
+            <a href="https://github.com/bk/wmk">Built by wmk</a><br>
+            <span>Cider icon <a href="https://www.flaticon.com/free-icons/juice" title="juice icons">created by Umeicon - Flaticon</a></span>
+          {%- endif %}
+        </small>
+    </footer>
+    {% endblock %}
+</body>
+<script>
+    const scrollHandler = entries => {
+        // Find the first entry which intersecting and ratio > 0.9 to highlight.
+        let entry = entries.find(entry => {
+            return entry.isIntersecting && entry.intersectionRatio > 0.9;
+        });
+        if (!entry) return;
+
+        document.querySelectorAll(".toc a").forEach((item) => {
+            item.classList.remove("active");
+        });
+
+        // let url = new URL(`#${entry.target.id}`);
+        let link = document.querySelector(`.toc a[href$="${decodeURIComponent(`#${entry.target.id}`)}"]`)
+        if (link) {
+            link.classList.add("active");
+            link.scrollIntoView({ behavior: "auto", block: "nearest" });
+        }
+    };
+    // Set -100px root margin to improve highlight experience.
+    const observer = new IntersectionObserver(scrollHandler, { threshold: 1 });
+    let items = document.querySelectorAll('h1,h2,h3,h4,h5,h6');
+    items.forEach(item => observer.observe(item));
+</script>
+
+</html>

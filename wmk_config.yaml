@@ -1,0 +1,6 @@
+site:
+  base_url: https://cider-theme.baldr.net
+  leading_path: /
+  title: Cider - An elegant and lightweight theme for product sites
+  lang: en
+jinja2_templates: True

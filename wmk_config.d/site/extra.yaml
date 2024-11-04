@@ -1,0 +1,9 @@
+cider:
+  logo_name: Cider
+  logo_path: /cider.png
+  extra_menu:
+    - title: Github
+      link: https://github.com/bk/cider
+  footer_text: |
+    <a href="https://github.com/bk/wmk">Built by wmk</a><br>
+    <span>Cider icon <a href="https://www.flaticon.com/free-icons/juice" title="juice icons">created by Umeicon - Flaticon</a></span>
