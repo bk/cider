@@ -8,6 +8,8 @@
 - Responsive and mobile device compatible
 - Easy to customize and extend
 
+[Demo page](https://cider.baldr.net/).
+
 Cider is a port of the excellent [Juice](https://juice.huhu.io/) theme for Zola.
 
 # Getting started
